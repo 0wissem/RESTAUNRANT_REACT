@@ -1,0 +1,54 @@
+[
+  {
+    "order_number": 1,
+    "recipes": [
+      {
+        "_id": 1,
+        "recipe_name": "pizza",
+        "quantity": 2,
+        "price": 12,
+        "image": "a.jpg"
+      },
+      {
+        "_id": 2,
+        "recipe_name": "spaghetti",
+        "quantity": 1,
+        "price": 20,
+        "image": "spaghetti.jpg"
+      },
+      {
+        "_id": 3,
+        "recipe_name": "sandwich",
+        "quantity": 2,
+        "price": 7,
+        "image": "sandwich.jpg"
+      }
+    ],
+    "total": 58,
+    "date": "07-08-22",
+    "etat": true
+  },
+  {
+    "order_number": 2,
+    "recipes": [
+      {
+        "_id": 1,
+        "recipe_name": "pizza",
+        "quantity": 2,
+        "price": 12,
+        "image": "a.jpg"
+      },
+
+      {
+        "_id": 3,
+        "recipe_name": "sandwich",
+        "quantity": 2,
+        "price": 7,
+        "image": "sandwich.jpg"
+      }
+    ],
+    "total": 38,
+    "date": "07-08-22",
+    "etat": false
+  }
+]
