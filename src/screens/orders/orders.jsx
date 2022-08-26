@@ -7,7 +7,7 @@ import cursTomAxios from "../../services/customAxios";
 import customAxios from "../../services/customAxios";
 
 const Orders = () => {
-  const [orders, setOrders] = useState(data);
+  const [orders, setOrders] = useState([]);
   const [orderById, setorderById] = useState([]);
   const [recipes, setRecipes] = useState([]);
   const [editFormData, setEditFormData] = useState({
@@ -151,7 +151,7 @@ const Orders = () => {
                           checked={order.etat}
                         />
                       </td>
-                      <td>{order.order_number}</td>
+                      <td>{order.seq}</td>
                       <td>
                         {order.recipes.map((recipe) => (
                           <h6 key={recipe._id} id={recipe._id}>
