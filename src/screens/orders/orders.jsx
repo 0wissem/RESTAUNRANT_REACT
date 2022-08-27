@@ -1,12 +1,14 @@
 import React, { useState, useEffect, Fragment } from "react";
 import { Modal, Button, Table } from "react-bootstrap";
-import data from "./dataOrder.json";
 import ReadOnlyRow from "./ReadOnlyRow";
 import EditableRow from "./EditableRow";
-import cursTomAxios from "../../services/customAxios";
 import customAxios from "../../services/customAxios";
-
+import { ORDER_STATE } from "../../constants/models";
+import { useCallback } from "react";
+import { useSelector } from "react-redux";
 const Orders = () => {
+  const { user } = useSelector((state) => state);
+
   const [orders, setOrders] = useState([]);
   const [orderById, setorderById] = useState([]);
   const [recipes, setRecipes] = useState([]);
@@ -108,12 +110,46 @@ const Orders = () => {
     setRecipes(data);
   };
 
-  const handleChangeEtat = (order_number) => (e) => {
-    let newArr = [...orders];
-    newArr[order_number][e.target.name] = e.target.checked;
-    setOrders(newArr);
+  const renderOrderActions = (order) => {
+    const btnClassName =
+      order.status === ORDER_STATE.PENDING
+        ? "fa-solid fa-kitchen-set" // show action is cooking
+        : order.status === ORDER_STATE.READY
+        ? "fa-solid fa-truck"
+        : ""; //show action Got PAID & delivered
+    const onUpdateOrder = async () => {
+      const payload = {
+        status:
+          order.status === ORDER_STATE.PENDING
+            ? ORDER_STATE.READY
+            : order.status === ORDER_STATE.READY
+            ? ORDER_STATE.SERVED
+            : null,
+      };
+      if (!payload.status) {
+        alert("Order is already Served!");
+        return;
+      }
+      const data = await customAxios.put(`order/edit/${order._id}`, payload);
+      if (data) {
+        setOrders((prev) => {
+          const curr = [...prev];
+          const index = prev.findIndex((e) => e._id === data._id);
+          curr[index] = data;
+          return curr;
+        });
+      } else if (data.error) {
+        alert(typeof data.error === "string" ? data.error : "error");
+      }
+    };
+    if (order.status !== ORDER_STATE.SERVED)
+      return (
+        <button className={`btn btn-dark  text-center`} onClick={onUpdateOrder}>
+          <i className={`${btnClassName}  text-light`}></i>
+        </button>
+      );
+    return null;
   };
-
   return (
     <div>
       <h2>
@@ -127,69 +163,64 @@ const Orders = () => {
           <table className="table  align-middle table-striped">
             <thead>
               <tr>
-                <th> </th>
                 <th> Order</th>
                 <th> Recipe</th>
-                <th> Total</th>
                 <th> Timing</th>
-                <th width="200"> Status</th>
-
+                <th> Status</th>
                 <th> Actions</th>
+                <th> Total</th>
               </tr>
             </thead>
             <tbody>
-              {orders.map(
-                (order, order_number) =>
-                  console.log(order) || (
-                    <tr key={order.order_number} id={order.order_number}>
-                      <td>
-                        <input
-                          type="checkbox"
-                          className="form-check-input"
-                          onChange={handleChangeEtat(order_number)}
-                          name="etat"
-                          checked={order.etat}
-                        />
-                      </td>
-                      <td>{order.seq}</td>
-                      <td>
-                        {order.recipes.map((recipe) => (
-                          <h6 key={recipe._id} id={recipe._id}>
-                            {recipe.quantity} x {recipe.recipe.name}
-                          </h6>
-                        ))}
-                      </td>
-                      <td>{order.total}</td>
-                      <td> {order.date}</td>
-                      <td>
-                        {order.etat === true ? (
-                          <span className="badge bg-success">Served</span>
-                        ) : (
-                          <span className="badge bg-danger">Pending</span>
-                        )}
-                      </td>
-                      <td>
-                        <button
-                          className="btn btn-dark  text-center me-2"
-                          onClick={() =>
-                            handleShow({ order_number: order.order_number })
-                          }
-                        >
-                          <i className="fa fa-eye "></i>
-                        </button>
+              {orders.map((order, order_number) => (
+                <tr key={order.order_number} id={order.order_number}>
+                  <td>{order.seq}</td>
+                  <td>
+                    {order.recipes.map((recipe) => (
+                      <h6 key={recipe._id} id={recipe._id}>
+                        {recipe.quantity} x {recipe.recipe.name}
+                      </h6>
+                    ))}
+                  </td>
 
-                        <button
-                          className="btn btn-warning  text-center"
-                          onClick={() =>
-                            handleShowEdit({ order_number: order.order_number })
-                          }
-                        >
-                          <i className="fa fa-edit text-light "></i>
-                        </button>
-                      </td>
-                    </tr>
-                  )
-              )}
+                  <td> {order.date}</td>
+                  <td>
+                    {order.status === ORDER_STATE.SERVED ? (
+                      <span className="badge bg-success">Served</span>
+                    ) : order.status === ORDER_STATE.PENDING ? (
+                      <span className="badge bg-danger">Pending</span>
+                    ) : order.status === ORDER_STATE.READY ? (
+                      <span className="badge bg-danger">Ready</span>
+                    ) : null}
+                  </td>
+                  <td>
+                    <button
+                      className="btn btn-dark  text-center me-2"
+                      onClick={() =>
+                        handleShow({ order_number: order.order_number })
+                      }
+                    >
+                      <i className="fa fa-eye "></i>
+                    </button>
+
+                    <button
+                      className="btn btn-warning  text-center me-2"
+                      onClick={() =>
+                        handleShowEdit({ order_number: order.order_number })
+                      }
+                    >
+                      <i className={`fa fa-edit text-light`}></i>
+                    </button>
+                    {renderOrderActions(order)}
+                  </td>
+                  <td>
+                    {order?.recipes?.reduce(
+                      (prev, curr) => prev + curr.recipe.price * curr.quantity,
+                      0
+                    ) || "error"}
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
