@@ -31,6 +31,13 @@ function SideBar() {
           </li>
 
           <li>
+            <NavLink to={{ pathname: `/family` }} className="link">
+              <i class="fa-solid fa-utensils me-2"></i>
+              Family
+            </NavLink>
+          </li>
+
+          <li>
             <NavLink to={{ pathname: `/recipe` }} className="link">
               <i className="fas fa-clipboard me-2"></i>
               Recipes

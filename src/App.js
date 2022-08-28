@@ -26,6 +26,9 @@ import EditRecipe from "./screens/recipe/recipes_edit";
 //orders
 import Orders from "./screens/orders/orders";
 
+//Family
+import Families from "./screens/family/families";
+
 function App() {
   return (
     <div>
@@ -48,6 +51,8 @@ function App() {
             <Route path="recipe/edit/:id" element={<EditRecipe />} />
 
             <Route path="order" element={<Orders />} />
+
+            <Route path="family" element={<Families />} />
           </Route>
         </Routes>
       </Router>
