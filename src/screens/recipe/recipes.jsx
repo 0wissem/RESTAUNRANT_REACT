@@ -138,7 +138,17 @@ const Recipes = () => {
             <div>
               <p className=" text">{recipeById.describe}</p>
               <div className="row">
-                <div className="col-12">
+                <div className="col-6">
+                  <button
+                    className="btn btn-dark w-100  text-center"
+                    onClick={() => {
+                      console.log("shop button");
+                    }}
+                  >
+                    <i class="fa-solid fa-cart-shopping"></i>
+                  </button>
+                </div>
+                <div className="col-6">
                   <button
                     className="btn btn-danger w-100  text-center"
                     onClick={() => {
