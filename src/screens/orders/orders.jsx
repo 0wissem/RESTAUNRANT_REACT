@@ -9,15 +9,24 @@ import { useSelector } from "react-redux";
 const Orders = () => {
   const { user } = useSelector((state) => state);
 
+  //orders
   const [orders, setOrders] = useState([]);
+  //order by id
   const [orderById, setorderById] = useState([]);
+  // recipes of order
   const [recipes, setRecipes] = useState([]);
-  const [editFormData, setEditFormData] = useState({
-    recipe: "",
-  });
-  const [editrecipeId, setEditrecipeId] = useState(null);
+  // show Modal: detail order
   const [show, setShow] = useState(false);
+  // show Modal: edit order
   const [showEdit, setShowEdit] = useState(false);
+  // close Modal: detail order
+  const handleClose = () => setShow(false);
+  // close Modal: edit order
+  const handleCloseEdit = () => setShowEdit(false);
+  // edit recipe
+  const [editFormData, setEditFormData] = useState({ recipe: "" });
+  // get recipe by id
+  const [editrecipeId, setEditrecipeId] = useState(null);
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -28,6 +37,28 @@ const Orders = () => {
     fetchOrders();
   }, []);
 
+  //show modal : detail recipe
+  const handleShow = (order_number) => {
+    setShow(true);
+    let orderById = orders.find(
+      (order) => order.order_number === order_number.order_number
+    );
+    setorderById(orderById);
+  };
+
+  //show modal: edit recipe
+  const handleShowEdit = (order_number) => {
+    setShowEdit(true);
+    let orderById = orders.find(
+      (order) => order.order_number === order_number.order_number
+    );
+    setorderById(orderById);
+
+    const data = orderById.recipes?.map((recipe) => recipe);
+    setRecipes(data);
+  };
+
+  //change state of order
   const handleEditFormChange = (event) => {
     event.preventDefault();
 
@@ -40,39 +71,26 @@ const Orders = () => {
     setEditFormData(newFormData);
   };
 
+  //get recipe for edit
   const handleEditClick = (event, recipe) => {
     event.preventDefault();
     setEditrecipeId(recipe._id);
 
     const formValues = {
-      recipe: recipe.recipe_name,
+      recipe_name: recipe.recipe_name,
       price: recipe.price,
       quantity: recipe.quantity,
     };
-
     setEditFormData(formValues);
   };
 
-  const handleCancelClick = () => {
-    setEditrecipeId(null);
-  };
-
-  const handleDeleteClick = (recipeId) => {
-    const newRecipes = [...recipes];
-    const index = orderById.recipes.findIndex(
-      (recipe) => recipe._id === recipeId
-    );
-    newRecipes.splice(index, 1);
-    setRecipes(newRecipes);
-
-    console.log(orderById);
-  };
-
+  //submit edit recipe
   const handleEditFormSubmit = (event) => {
     event.preventDefault();
 
     const editedrecipe = {
       _id: editrecipeId,
+      recipe_name: editFormData.recipe_name,
 
       price: editFormData.price,
       quantity: editFormData.quantity,
@@ -85,29 +103,25 @@ const Orders = () => {
     newrecipes[index] = editedrecipe;
 
     setRecipes(newrecipes);
+    console.log(newrecipes);
     setEditrecipeId(null);
   };
 
-  const handleClose = () => setShow(false);
-  const handleCloseEdit = () => setShowEdit(false);
-
-  const handleShow = (order_number) => {
-    setShow(true);
-    let orderById = orders.find(
-      (order) => order.order_number === order_number.order_number
-    );
-    setorderById(orderById);
+  //click cancel button: cancel edit recipe
+  const handleCancelClick = () => {
+    setEditrecipeId(null);
   };
 
-  const handleShowEdit = (order_number) => {
-    setShowEdit(true);
-    let orderById = orders.find(
-      (order) => order.order_number === order_number.order_number
+  //click delete button: delete recipe
+  const handleDeleteClick = (recipeId) => {
+    const newRecipes = [...recipes];
+    const index = orderById.recipes.findIndex(
+      (recipe) => recipe._id === recipeId
     );
-    setorderById(orderById);
+    newRecipes.splice(index, 1);
+    setRecipes(newRecipes);
 
-    const data = orderById.recipes?.map((recipe) => recipe);
-    setRecipes(data);
+    console.log(orderById);
   };
 
   const renderOrderActions = (order) => {
