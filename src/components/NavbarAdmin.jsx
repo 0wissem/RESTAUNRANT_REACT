@@ -27,6 +27,173 @@ const Navbar = () => {
               <li className="nav-item active"></li>
             </ul>
           </div>
+          <div className="dropdown  me-3 mt-1">
+            <button
+              className="btn btn-dark dropdown-toggle"
+              href="#"
+              type="button"
+              id="dropdownMenuLink"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <i className="fa-solid fa-cart-shopping"></i>
+              <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                4+
+              </span>
+            </button>
+
+            <div
+              className="dropdown-menu "
+              aria-labelledby="dropdownMenuLink"
+              style={{ right: 0, left: "auto", width: 400 }}
+            >
+              <div className="d-flex bd-highlight m-1 ">
+                <div className="ms-auto p-1 bd-highlight">
+                  <button
+                    type="button"
+                    className="btn-close "
+                    aria-label="Close"
+                  ></button>
+                </div>
+              </div>
+              <hr />
+              <div className="Scroll">
+                <div className=" mb-2 px-3 py-2">
+                  <div className="row">
+                    <div className="col-md-4">
+                      <img
+                        src={"/uploads/a.jpg"}
+                        className="img-fluid rounded"
+                        alt="..."
+                      />
+                    </div>
+                    <div className="col-md-8 px-3">
+                      <div>
+                        <h4 className="text-primary">Pizza</h4>
+                        <p>12 $</p>
+                        <div className="mt-0 row">
+                          <label
+                            htmlFor="inputQuantity"
+                            className="col-sm-4 col-form-label"
+                          >
+                            Quantity:
+                          </label>
+                          <div className="col-sm-8">
+                            <input
+                              type="number"
+                              className="form-control w-50"
+                              id="inputQuantity"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="dropdown-divider"></div>
+                <div className=" mb-2 px-3 py-2">
+                  <div className="row">
+                    <div className="col-md-4">
+                      <img
+                        src={"/uploads/a.jpg"}
+                        className="img-fluid rounded"
+                        alt="..."
+                      />
+                    </div>
+                    <div className="col-md-8 px-3">
+                      <div>
+                        <h4 className="text-primary">Pizza</h4>
+                        <p>12 $</p>
+                        <div className="mt-0 row">
+                          <label
+                            htmlFor="inputQuantity"
+                            className="col-sm-4 col-form-label"
+                          >
+                            Quantity:
+                          </label>
+                          <div className="col-sm-8">
+                            <input
+                              type="number"
+                              className="form-control w-50"
+                              id="inputQuantity"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="dropdown-divider"></div>{" "}
+                <div className=" mb-2 px-3 py-2">
+                  <div className="row">
+                    <div className="col-md-4">
+                      <img
+                        src={"/uploads/a.jpg"}
+                        className="img-fluid rounded"
+                        alt="..."
+                      />
+                    </div>
+                    <div className="col-md-8 px-3">
+                      <div>
+                        <h4 className="text-primary">Pizza</h4>
+                        <p>12 $</p>
+                        <div className="mt-0 row">
+                          <label
+                            htmlFor="inputQuantity"
+                            className="col-sm-4 col-form-label"
+                          >
+                            Quantity:
+                          </label>
+                          <div className="col-sm-8">
+                            <input
+                              type="number"
+                              className="form-control w-50"
+                              id="inputQuantity"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="dropdown-divider"></div>{" "}
+                <div className=" mb-2 px-3 py-2">
+                  <div className="row">
+                    <div className="col-md-4">
+                      <img
+                        src={"/uploads/a.jpg"}
+                        className="img-fluid rounded"
+                        alt="..."
+                      />
+                    </div>
+                    <div className="col-md-8 px-3">
+                      <div>
+                        <h4 className="text-primary">Pizza</h4>
+                        <p>12 $</p>
+                        <div className="mt-0 row">
+                          <label
+                            htmlFor="inputQuantity"
+                            className="col-sm-4 col-form-label"
+                          >
+                            Quantity:
+                          </label>
+                          <div className="col-sm-8">
+                            <input
+                              type="number"
+                              className="form-control w-50"
+                              id="inputQuantity"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="dropdown-divider"></div>
+              </div>
+            </div>
+          </div>
+
           <div className="dropdown   ">
             <button
               className="btn btn-dark "
@@ -50,7 +217,7 @@ const Navbar = () => {
                 className="dropdown-item "
                 onClick={() => {
                   localStorage.clear();
-                  window.location = "/login";
+                  window.location = "/";
                 }}
               >
                 <i className="fa-solid fa-arrow-right-from-bracket me-2"></i>{" "}

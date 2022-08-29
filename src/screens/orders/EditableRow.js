@@ -1,6 +1,7 @@
 import React from "react";
 
 const EditableRow = ({
+  recipes,
   editFormData,
   handleEditFormChange,
   handleCancelClick,
@@ -8,55 +9,48 @@ const EditableRow = ({
   return (
     <tr>
       <td>
-        <input
-          type="text"
-          required="required"
-          name="recipe"
-          className="form-control w-75"
-          value={editFormData.recipe}
+        <select
+          name="recipe_name"
+          className="form-select"
           onChange={handleEditFormChange}
-        ></input>
+        >
+          <option key={editFormData._id} value={editFormData.recipe_name}>
+            {editFormData.recipe_name}
+          </option>
+          <option></option>
+          {recipes.map((recipe) => (
+            <option key={recipe._id} value={recipe.recipe_name}>
+              {recipe.recipe_name}
+            </option>
+          ))}
+        </select>
       </td>
-      <td>
-        <input
-          type="text"
-          disabled
-          className="form-control w-75"
-          name="price"
-          value={editFormData.price}
-          onChange={handleEditFormChange}
-        ></input>
-      </td>
+      <td>{editFormData.price}</td>
 
       <td>
         <input
-          type="text"
+          type="number"
           required="required"
-          placeholder="Enter a name..."
           name="quantity"
           className="form-control w-75"
           value={editFormData.quantity}
           onChange={handleEditFormChange}
-        ></input>
+        />
       </td>
+      <td>{editFormData.quantity * editFormData.price}</td>
       <td>
-        <input
-          type="text"
-          className="form-control w-75"
-          name="totalfooditem"
-          disabled
-          value={editFormData.quantity * editFormData.price}
-          onChange={handleEditFormChange}
-        ></input>
-      </td>
-      <td>
-        <button type="submit" className="btn btn-success  text-center me-2">
+        <button
+          type="submit"
+          className="btn btn-success  text-center me-2"
+          title="Save"
+        >
           <i className="fa-solid fa-floppy-disk"></i>
         </button>
         <button
           type="button"
           className="btn btn-danger  text-center "
           onClick={handleCancelClick}
+          title="Cancel"
         >
           <i className="fa-solid fa-rectangle-xmark"></i>
         </button>

@@ -1,4 +1,3 @@
-
 body {
     font-family: 'Poppins', sans-serif;
     background: #fafafa;
@@ -11,9 +10,9 @@ p {
     line-height: 1.7em;
 }
 
-.link{
+.link {
     color: inherit;
-        text-decoration: none;
+    text-decoration: none;
 }
 
 a:hover,
@@ -52,7 +51,7 @@ span {
 
 
 .wrapper {
-    margin-top:-40px;
+    margin-top: -40px;
     display: flex;
     align-items: stretch;
 }
@@ -259,37 +258,30 @@ a.article:hover {
     }
 }
 
- .floating-card {
-     float: left;
-     margin: 5px;
-     max-width: 300px;
+.floating-card {
+    float: left;
+    margin: 5px;
+    max-width: 300px;
 
- }
+}
 
 
-  .image {
-      height: 200px;
-  }
+.image {
+    height: 200px;
+}
 
-  .text{
-      white-space: pre-wrap;
-      word-wrap: break-word;
-  }
+.text {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
 
 #header {
     background-color: #ffc107;
     min-height: 300px;
 }
- 
 
 
-  .rose {
-      font-size: 6rem;
-      text-align: center;
-      color: #fcedd8;
-      font-family: 'Niconne', cursive;
-      font-weight: 700;
-      text-shadow: 5px 5px 0px #ff8800,
-          10px 10px 0px #efa032 }
-
- 
+.Scroll {
+    height: 400px;
+    overflow-y: scroll;
+}
