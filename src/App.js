@@ -28,6 +28,7 @@ import Orders from "./screens/orders/orders";
 
 //Family
 import Families from "./screens/family/families";
+import AddFamily from "./screens/family/families_create";
 
 function App() {
   return (
@@ -53,6 +54,7 @@ function App() {
             <Route path="order" element={<Orders />} />
 
             <Route path="family" element={<Families />} />
+            <Route path="family/add" element={<AddFamily />} />
           </Route>
         </Routes>
       </Router>
