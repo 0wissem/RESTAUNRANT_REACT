@@ -4,10 +4,10 @@ import { Link } from "react-router-dom";
 const Navbar = () => {
   const [user, setUser] = useState("");
 
-  useEffect(() => {
-    const userInfo = JSON.parse(localStorage.getItem("user"));
-    setUser(userInfo.userLogin.username);
-  }, []);
+  // useEffect(() => {
+  //   const userInfo = JSON.parse(localStorage.getItem("user"));
+  //   setUser(userInfo.userLogin.username);
+  // }, []);
 
   return (
     <div>
