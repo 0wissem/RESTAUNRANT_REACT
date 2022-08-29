@@ -220,7 +220,7 @@ const Navbar = () => {
                   window.location = "/";
                 }}
               >
-                <i className="fa-solid fa-arrow-right-from-bracket me-2"></i>{" "}
+                <i className="fa-solid fa-arrow-right-from-bracket me-2"></i>
                 Logout
               </button>
             </div>

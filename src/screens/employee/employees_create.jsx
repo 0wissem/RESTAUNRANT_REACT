@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { ROLES } from "../../constants/models";
 const AddEmployee = () => {
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
@@ -64,16 +65,16 @@ const AddEmployee = () => {
             aria-label="Default select example"
           >
             <option value="select"> </option>
-            <option name="role" value="Admin">
+            <option name="role" value={ROLES.ADMIN}>
               Admin
             </option>
-            <option name="role" value="Chef">
+            <option name="role" value={ROLES.CHIEF}>
               Chef
             </option>
-            <option name="role" value="Server">
+            <option name="role" value={ROLES.SERVER}>
               Server
             </option>
-            <option name="role" value="Client">
+            <option name="role" value={ROLES.CLIENT}>
               Client
             </option>
           </select>
