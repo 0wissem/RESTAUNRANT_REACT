@@ -32,7 +32,7 @@ function SideBar() {
 
           <li>
             <NavLink to={{ pathname: `/family` }} className="link">
-              <i class="fa-solid fa-utensils me-2"></i>
+              <i className="fa-solid fa-utensils me-2"></i>
               Family
             </NavLink>
           </li>

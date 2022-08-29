@@ -27,17 +27,17 @@ const Navbar = () => {
               <li className="nav-item active"></li>
             </ul>
           </div>
-          <div class="dropdown  me-3 mt-1">
+          <div className="dropdown  me-3 mt-1">
             <button
-              class="btn btn-dark dropdown-toggle"
+              className="btn btn-dark dropdown-toggle"
               href="#"
               type="button"
               id="dropdownMenuLink"
               data-bs-toggle="dropdown"
               aria-expanded="false"
             >
-              <i class="fa-solid fa-cart-shopping"></i>
-              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+              <i className="fa-solid fa-cart-shopping"></i>
+              <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                 4+
               </span>
             </button>
@@ -57,31 +57,31 @@ const Navbar = () => {
                 </div>
               </div>
               <hr />
-              <div class="Scroll">
-                <div class=" mb-2 px-3 py-2">
-                  <div class="row">
-                    <div class="col-md-4">
+              <div className="Scroll">
+                <div className=" mb-2 px-3 py-2">
+                  <div className="row">
+                    <div className="col-md-4">
                       <img
                         src={"/uploads/a.jpg"}
                         className="img-fluid rounded"
                         alt="..."
                       />
                     </div>
-                    <div class="col-md-8 px-3">
+                    <div className="col-md-8 px-3">
                       <div>
                         <h4 className="text-primary">Pizza</h4>
                         <p>12 $</p>
-                        <div class="mt-0 row">
+                        <div className="mt-0 row">
                           <label
                             htmlFor="inputQuantity"
-                            class="col-sm-4 col-form-label"
+                            className="col-sm-4 col-form-label"
                           >
                             Quantity:
                           </label>
-                          <div class="col-sm-8">
+                          <div className="col-sm-8">
                             <input
                               type="number"
-                              class="form-control w-50"
+                              className="form-control w-50"
                               id="inputQuantity"
                             />
                           </div>
@@ -90,31 +90,31 @@ const Navbar = () => {
                     </div>
                   </div>
                 </div>
-                <div class="dropdown-divider"></div>
-                <div class=" mb-2 px-3 py-2">
-                  <div class="row">
-                    <div class="col-md-4">
+                <div className="dropdown-divider"></div>
+                <div className=" mb-2 px-3 py-2">
+                  <div className="row">
+                    <div className="col-md-4">
                       <img
                         src={"/uploads/a.jpg"}
                         className="img-fluid rounded"
                         alt="..."
                       />
                     </div>
-                    <div class="col-md-8 px-3">
+                    <div className="col-md-8 px-3">
                       <div>
                         <h4 className="text-primary">Pizza</h4>
                         <p>12 $</p>
-                        <div class="mt-0 row">
+                        <div className="mt-0 row">
                           <label
                             htmlFor="inputQuantity"
-                            class="col-sm-4 col-form-label"
+                            className="col-sm-4 col-form-label"
                           >
                             Quantity:
                           </label>
-                          <div class="col-sm-8">
+                          <div className="col-sm-8">
                             <input
                               type="number"
-                              class="form-control w-50"
+                              className="form-control w-50"
                               id="inputQuantity"
                             />
                           </div>
@@ -123,31 +123,31 @@ const Navbar = () => {
                     </div>
                   </div>
                 </div>
-                <div class="dropdown-divider"></div>{" "}
-                <div class=" mb-2 px-3 py-2">
-                  <div class="row">
-                    <div class="col-md-4">
+                <div className="dropdown-divider"></div>{" "}
+                <div className=" mb-2 px-3 py-2">
+                  <div className="row">
+                    <div className="col-md-4">
                       <img
                         src={"/uploads/a.jpg"}
                         className="img-fluid rounded"
                         alt="..."
                       />
                     </div>
-                    <div class="col-md-8 px-3">
+                    <div className="col-md-8 px-3">
                       <div>
                         <h4 className="text-primary">Pizza</h4>
                         <p>12 $</p>
-                        <div class="mt-0 row">
+                        <div className="mt-0 row">
                           <label
                             htmlFor="inputQuantity"
-                            class="col-sm-4 col-form-label"
+                            className="col-sm-4 col-form-label"
                           >
                             Quantity:
                           </label>
-                          <div class="col-sm-8">
+                          <div className="col-sm-8">
                             <input
                               type="number"
-                              class="form-control w-50"
+                              className="form-control w-50"
                               id="inputQuantity"
                             />
                           </div>
@@ -156,31 +156,31 @@ const Navbar = () => {
                     </div>
                   </div>
                 </div>
-                <div class="dropdown-divider"></div>{" "}
-                <div class=" mb-2 px-3 py-2">
-                  <div class="row">
-                    <div class="col-md-4">
+                <div className="dropdown-divider"></div>{" "}
+                <div className=" mb-2 px-3 py-2">
+                  <div className="row">
+                    <div className="col-md-4">
                       <img
                         src={"/uploads/a.jpg"}
                         className="img-fluid rounded"
                         alt="..."
                       />
                     </div>
-                    <div class="col-md-8 px-3">
+                    <div className="col-md-8 px-3">
                       <div>
                         <h4 className="text-primary">Pizza</h4>
                         <p>12 $</p>
-                        <div class="mt-0 row">
+                        <div className="mt-0 row">
                           <label
                             htmlFor="inputQuantity"
-                            class="col-sm-4 col-form-label"
+                            className="col-sm-4 col-form-label"
                           >
                             Quantity:
                           </label>
-                          <div class="col-sm-8">
+                          <div className="col-sm-8">
                             <input
                               type="number"
-                              class="form-control w-50"
+                              className="form-control w-50"
                               id="inputQuantity"
                             />
                           </div>
@@ -189,7 +189,7 @@ const Navbar = () => {
                     </div>
                   </div>
                 </div>
-                <div class="dropdown-divider"></div>
+                <div className="dropdown-divider"></div>
               </div>
             </div>
           </div>
