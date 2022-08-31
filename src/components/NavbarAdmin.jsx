@@ -2,12 +2,13 @@ import React, { useState, useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
 
 const Navbar = () => {
+  //error localStorage User
   const [user, setUser] = useState("");
 
-  useEffect(() => {
+  /*  useEffect(() => {
     const userInfo = JSON.parse(localStorage.getItem("user"));
     setUser(userInfo.userLogin.username);
-  }, []);
+  }, []);*/
 
   return (
     <div>

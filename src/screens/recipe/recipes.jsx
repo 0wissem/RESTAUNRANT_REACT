@@ -8,6 +8,14 @@ const Recipes = () => {
 
   const [show, setShow] = useState(false);
   const [recipeById, setRecipeById] = useState([]);
+  useEffect(() => {
+    axios
+      .get(`http://localhost:3001/api/recipe/`)
+      .then((response) => {
+        setRecipes(response.data);
+      })
+      .catch((error) => console.log(error));
+  }, []);
 
   const handleClose = () => setShow(false);
   const handleShow = (id) => {
@@ -20,15 +28,6 @@ const Recipes = () => {
       })
       .catch((error) => console.log(error));
   };
-
-  useEffect(() => {
-    axios
-      .get(`http://localhost:3001/api/recipe/`)
-      .then((response) => {
-        setRecipes(response.data);
-      })
-      .catch((error) => console.log(error));
-  }, []);
 
   const deleteHandler = (id) => {
     if (window.confirm("Are you sure")) {
@@ -45,6 +44,16 @@ const Recipes = () => {
         })
         .catch((error) => console.log(error));
     }
+  };
+
+  // shop order
+  const shopHandler = (id) => {
+    console.log(recipeById);
+    let msgArr = JSON.parse(localStorage.getItem("detailsOrder"))
+      ? JSON.parse(localStorage.getItem("detailsOrder"))
+      : [];
+    msgArr.push(recipeById);
+    localStorage.setItem("detailsOrder", JSON.stringify(msgArr));
   };
 
   return (
@@ -87,6 +96,7 @@ const Recipes = () => {
                     <p>{recipe.describe.substr(0, 30)}...</p>
                   )}
                 </div>
+                <br />
                 <div className="row">
                   <div className="col-4">
                     <button
@@ -141,11 +151,9 @@ const Recipes = () => {
                 <div className="col-6">
                   <button
                     className="btn btn-dark w-100  text-center"
-                    onClick={() => {
-                      console.log("shop button");
-                    }}
+                    onClick={() => shopHandler(recipeById._id)}
                   >
-                    <i class="fa-solid fa-cart-shopping"></i>
+                    <i className="fa-solid fa-cart-shopping"></i>
                   </button>
                 </div>
                 <div className="col-6">
