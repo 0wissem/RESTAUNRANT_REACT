@@ -31,10 +31,10 @@ import EditFamily from "./screens/family/families_edit";
 import Container from "./screens/Container";
 import Privacy from "./components/Privacy";
 import { useSelector } from "react-redux";
+import { ROLES } from "./constants/models";
 
 function App() {
   const role = useSelector((state) => state?.user?.data?.role || undefined);
-  console.log(role);
   return (
     <div>
       <Router>
@@ -44,7 +44,7 @@ function App() {
             <Route
               path="dashboard"
               element={
-                <Privacy show={false}>
+                <Privacy show={role === ROLES.ADMIN}>
                   <Dashboard />
                 </Privacy>
               }
@@ -52,7 +52,7 @@ function App() {
             <Route
               path="employees"
               element={
-                <Privacy>
+                <Privacy show={role === ROLES.ADMIN}>
                   <Employees />
                 </Privacy>
               }
@@ -60,7 +60,7 @@ function App() {
             <Route
               path="employee/add"
               element={
-                <Privacy>
+                <Privacy show={role === ROLES.ADMIN}>
                   <AddEmployee />
                 </Privacy>
               }
@@ -68,7 +68,7 @@ function App() {
             <Route
               path="employee/edit/:id"
               element={
-                <Privacy>
+                <Privacy show={role === ROLES.ADMIN}>
                   <EditEmployee />
                 </Privacy>
               }
@@ -77,7 +77,7 @@ function App() {
             <Route
               path="ingredient"
               element={
-                <Privacy>
+                <Privacy show={role === ROLES.ADMIN}>
                   <Ingredients />
                 </Privacy>
               }
@@ -85,7 +85,7 @@ function App() {
             <Route
               path="ingredient/add"
               element={
-                <Privacy>
+                <Privacy show={role === ROLES.ADMIN}>
                   <AddIngredient />
                 </Privacy>
               }
@@ -93,7 +93,7 @@ function App() {
             <Route
               path="ingredient/edit/:id"
               element={
-                <Privacy>
+                <Privacy show={role === ROLES.ADMIN}>
                   <EditIngredient />
                 </Privacy>
               }
@@ -110,7 +110,7 @@ function App() {
             <Route
               path="recipe/add"
               element={
-                <Privacy>
+                <Privacy show={role === ROLES.ADMIN}>
                   <AddRecipe />
                 </Privacy>
               }
@@ -118,7 +118,7 @@ function App() {
             <Route
               path="recipe/edit/:id"
               element={
-                <Privacy>
+                <Privacy show={role === ROLES.ADMIN}>
                   <EditRecipe />
                 </Privacy>
               }
@@ -136,7 +136,7 @@ function App() {
             <Route
               path="family"
               element={
-                <Privacy>
+                <Privacy show={role === ROLES.ADMIN}>
                   <Families />
                 </Privacy>
               }
@@ -144,7 +144,7 @@ function App() {
             <Route
               path="family/add"
               element={
-                <Privacy>
+                <Privacy show={role === ROLES.ADMIN}>
                   <AddFamily />
                 </Privacy>
               }
@@ -152,7 +152,7 @@ function App() {
             <Route
               path="family/edit/:id"
               element={
-                <Privacy>
+                <Privacy show={role === ROLES.ADMIN}>
                   <EditFamily />
                 </Privacy>
               }
