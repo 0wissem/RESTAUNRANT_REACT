@@ -2,7 +2,7 @@ import { Outlet } from "react-router";
 import Navbar from "../components/NavbarAdmin";
 import SideBar from "../components/SideBarAdmin";
 
-const Admin = () => {
+const Container = () => {
   return (
     <div>
       <Navbar />
@@ -15,4 +15,4 @@ const Admin = () => {
     </div>
   );
 };
-export default Admin;
+export default Container;

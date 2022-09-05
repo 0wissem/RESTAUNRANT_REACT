@@ -29,6 +29,7 @@ const userSlice = createSlice({
       console.log("FULFILLED");
 
       state.data = action.payload.userLogin;
+      console.log(action.payload);
       state.pending = false;
       //       // store the user in localStorage
       //       localStorage.setItem("user", JSON.stringify(res.data));
