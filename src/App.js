@@ -134,6 +134,14 @@ function App() {
               }
             />
             <Route
+              path="orderClient"
+              element={
+                <Privacy>
+                  <OrderClient />
+                </Privacy>
+              }
+            />
+            <Route
               path="family"
               element={
                 <Privacy show={role === ROLES.ADMIN}>
