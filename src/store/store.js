@@ -16,7 +16,10 @@ export const store = configureStore({
     order: orderPersistedSlice,
     user: userPersistedSlice,
   },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
 });
 
 export const persistor = persistStore(store);
