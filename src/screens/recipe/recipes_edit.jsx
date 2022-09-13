@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 
 import axios from "axios";
 const EditRecipe = () => {
@@ -9,7 +9,20 @@ const EditRecipe = () => {
   const [image, setImage] = useState("");
   const [describe, setDescribe] = useState("");
   const [price, setPrice] = useState("");
-
+  const [family, setFamily] = useState(null);
+  const [families, setFamilies] = useState([]);
+  useEffect(() => {
+    try {
+      axios.get(`http://localhost:3001/api/family/`).then((response) => {
+        if (response.data) {
+          setFamilies(response.data);
+          setFamily(response.data?.[0]?._id);
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
   useEffect(() => {
     axios
       .get("http://localhost:3001/api/recipe/" + id)
@@ -18,6 +31,7 @@ const EditRecipe = () => {
         setDescribe(res.data.describe);
         setImage(res.data.image);
         setPrice(res.data.price);
+        setFamily(res.data.family);
       })
       .catch((error) => {
         console.log(error);
@@ -39,6 +53,7 @@ const EditRecipe = () => {
     formdata.append("image", image);
     formdata.append("price", price);
     formdata.append("describe", describe);
+    formdata.append("family", family);
 
     await axios
       .put(`http://localhost:3001/api/recipe/update/${id}`, formdata, {
@@ -46,14 +61,14 @@ const EditRecipe = () => {
       })
       .then((res) => {
         console.log(res.data);
-        window.location = "/recipe";
+        // window.location = "/recipe";
       });
   };
 
   return (
     <div>
       <h2>
-        <i className="fa fa-user me-3"></i>Edit Employee
+        <i className="fa fa-user me-3"></i>Edit Recipe
       </h2>
 
       <div className="line"></div>
@@ -74,7 +89,29 @@ const EditRecipe = () => {
           />
         </div>
       </div>
-
+      <div className="form-group row mb-2 mx-2">
+        <label htmlFor="formPrice" className="col-sm-2">
+          Family*
+        </label>
+        <div className="col-sm-8">
+          <select
+            required
+            defaultValue="select"
+            value={family}
+            onChange={(e) => {
+              setFamily(e.target.value);
+            }}
+            className="form-select"
+            aria-label="Default select example"
+          >
+            {families.map((family) => (
+              <option name="family" value={family._id}>
+                {family.name}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
       <div className="form-group row mb-2 mx-2">
         <label htmlFor="formPrice" className="col-sm-2">
           Price *
