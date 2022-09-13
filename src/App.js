@@ -36,6 +36,7 @@ import { ROLES } from "./constants/models";
 
 function App() {
   const role = useSelector((state) => state?.user?.data?.role || undefined);
+
   return (
     <div>
       <Router>

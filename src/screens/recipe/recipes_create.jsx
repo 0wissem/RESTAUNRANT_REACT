@@ -1,11 +1,23 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 const AddRecipe = () => {
   const [name, setName] = useState("");
   const [image, setImage] = useState("");
   const [describe, setDescribe] = useState("");
   const [price, setPrice] = useState("");
-
+  const [role, setRole] = useState(null);
+  const [family, setFamily] = useState(null);
+  const [families, setFamilies] = useState([]);
+  console.log({ families });
+  useEffect(() => {
+    try {
+      axios.get(`http://localhost:3001/api/family/`).then((response) => {
+        if (response.data) setFamilies(response.data);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
   //handleSubmit
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -21,15 +33,19 @@ const AddRecipe = () => {
     formdata.append("image", image);
     formdata.append("price", price);
     formdata.append("describe", describe);
-
-    await axios
-      .post("http://localhost:3001/api/recipe/add", formdata, {
-        headers: { "Content-Type": "multipart/form-data" },
-      })
-      .then((res) => {
-        console.log(res.data);
-        window.location = "/recipe";
-      });
+    formdata.append("family", family);
+    try {
+      await axios
+        .post("http://localhost:3001/api/recipe/add", formdata, {
+          headers: { "Content-Type": "multipart/form-data" },
+        })
+        .then((res) => {
+          console.log(res.data);
+          window.location = "/recipe";
+        });
+    } catch (error) {
+      console.log(error, "recipe_create");
+    }
   };
 
   return (
@@ -42,7 +58,7 @@ const AddRecipe = () => {
 
       <div className="form-group row mb-2 mx-2">
         <label htmlFor="formName" className="col-sm-2">
-          Name *
+          Name*
         </label>
         <div className="col-sm-8">
           <input
@@ -56,7 +72,29 @@ const AddRecipe = () => {
           />
         </div>
       </div>
-
+      <div className="form-group row mb-2 mx-2">
+        <label htmlFor="formPrice" className="col-sm-2">
+          Family*
+        </label>
+        <div className="col-sm-8">
+          <select
+            required
+            defaultValue="select"
+            value={family}
+            onChange={(e) => {
+              setFamily(e.target.value);
+            }}
+            className="form-select"
+            aria-label="Default select example"
+          >
+            {families.map((family) => (
+              <option name="family" value={family._id}>
+                {family.name}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
       <div className="form-group row mb-2 mx-2">
         <label htmlFor="formPrice" className="col-sm-2">
           Price *

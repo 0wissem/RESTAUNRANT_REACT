@@ -51,7 +51,7 @@ const AddEmployee = () => {
 
       <div className="form-group row mb-2 mx-2">
         <label htmlFor="formName" className="col-sm-2">
-          Role *
+          Role*
         </label>
         <div className="col-sm-8">
           <select
