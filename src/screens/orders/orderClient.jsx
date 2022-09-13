@@ -1,14 +1,38 @@
 import React, { useState, useEffect } from "react";
+import { Modal, Button } from "react-bootstrap";
+import axios from "axios";
 
 const OrderClient = () => {
   const [orders, setOrders] = useState([]);
-
+  const [show, setShow] = useState(false);
+  const [numberCar, setNumberCar] = useState("");
   useEffect(() => {
     const orders = JSON.parse(localStorage.getItem("detailsOrder"));
     if (orders) {
       setOrders(orders);
     }
   }, []);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  //handleSubmit
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    console.log({
+      numberCar,
+    });
+
+    const client = {
+      numberCar,
+    };
+
+    await axios
+      .post("http://localhost:3001/api/client/add", client)
+      .then((res) => {
+        console.log(res.data);
+      });
+  };
 
   return (
     <div>
@@ -18,6 +42,11 @@ const OrderClient = () => {
       <div className="line "></div>
 
       <div className="row justify-content-center">
+        <div className="d-flex flex-row-reverse ">
+          <button className="btn btn-success mb-5 " onClick={handleShow}>
+            <i class="fa-solid fa-floppy-disk me-2"></i>Save
+          </button>
+        </div>
         <div>
           <table className="table  align-middle ">
             <thead>
@@ -58,6 +87,44 @@ const OrderClient = () => {
           </table>
         </div>
       </div>
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Customer Car Number</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div>
+            <div>
+              <div className="row">
+                <div className="mb-3">
+                  <br />
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Car Number"
+                    required
+                    value={numberCar}
+                    onChange={(e) => setNumberCar(e.target.value)}
+                  />
+                </div>
+                <div className="mb-3 text-center">
+                  <button
+                    type="submit"
+                    onClick={(event) => handleSubmit(event)}
+                    className="btn btn-primary px-5  rounded-pill"
+                  >
+                    Save Client
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };
