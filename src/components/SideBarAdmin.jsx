@@ -39,16 +39,16 @@ function SideBar() {
             <li>
               <NavLink to={{ pathname: `/family` }} className="link">
                 <i className="fa-solid fa-utensils me-2"></i>
-                Family
+                Menu
               </NavLink>
             </li>
           )}
-          <li>
+          {/* <li>
             <NavLink to={{ pathname: `/recipe` }} className="link">
               <i className="fas fa-clipboard me-2"></i>
               Recipes
             </NavLink>
-          </li>
+          </li> */}
           {role === ROLES.ADMIN && (
             <li>
               <NavLink to={{ pathname: `/ingredient` }} className="link">
