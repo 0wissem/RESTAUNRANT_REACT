@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 const AddFamily = () => {
   const [name, setName] = useState("");
-  const [image, setImage] = useState("");
+  const [image, setImage] = useState("defaut.png");
   const [describe, setDescribe] = useState("");
 
   //handleSubmit
@@ -15,10 +15,15 @@ const AddFamily = () => {
     });
 
     const formdata = new FormData();
+    console.log(formdata);
+    console.log(image);
+
     formdata.append("name", name);
     formdata.append("image", image);
     formdata.append("describe", describe);
-
+    for (const value of formdata.values()) {
+      console.log(value);
+    }
     await axios
       .post("http://localhost:3001/api/family/add", formdata, {
         headers: { "Content-Type": "multipart/form-data" },
@@ -56,7 +61,7 @@ const AddFamily = () => {
 
       <div className="form-group row mb-2 mx-2">
         <label htmlFor="image" className="col-sm-2">
-          Image *
+          Image
         </label>
         <div className="col-sm-8">
           <input
@@ -65,7 +70,6 @@ const AddFamily = () => {
             id="image"
             filename="image"
             onChange={(e) => setImage(e.target.files[0])}
-            required
           />
         </div>
       </div>
