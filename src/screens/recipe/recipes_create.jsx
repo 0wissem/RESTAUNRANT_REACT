@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 const AddRecipe = () => {
   const [name, setName] = useState("");
-  const [image, setImage] = useState("");
+  const [image, setImage] = useState("defaut.png");
   const [describe, setDescribe] = useState("");
   const [price, setPrice] = useState("");
   const [role, setRole] = useState(null);
@@ -114,7 +114,7 @@ const AddRecipe = () => {
 
       <div className="form-group row mb-2 mx-2">
         <label htmlFor="image" className="col-sm-2">
-          Image *
+          Image
         </label>
         <div className="col-sm-8">
           <input
@@ -124,7 +124,6 @@ const AddRecipe = () => {
             filename="image"
             value={image}
             onChange={(e) => setImage(e.target.files[0])}
-            required
           />
         </div>
       </div>
