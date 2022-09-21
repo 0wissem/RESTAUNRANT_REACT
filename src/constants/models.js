@@ -9,3 +9,8 @@ export const ROLES = {
   SERVER: "server",
   CLIENT: "client",
 };
+export const UNITY = {
+  kilograme: "kg",
+  gram: "g",
+  piece: "p",
+};
