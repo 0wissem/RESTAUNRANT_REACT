@@ -110,7 +110,7 @@ function App() {
               }
             />
             <Route
-              path="recipe/add"
+              path="recipe/add/:idFamily"
               element={
                 <Privacy show={role === ROLES.ADMIN}>
                   <AddRecipe />
