@@ -1,22 +1,38 @@
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+
 import axios from "axios";
 const AddRecipe = () => {
+  const { idFamily } = useParams();
+
   const [name, setName] = useState("");
   const [image, setImage] = useState("defaut.png");
   const [describe, setDescribe] = useState("");
   const [price, setPrice] = useState("");
-  const [role, setRole] = useState(null);
-  const [family, setFamily] = useState(null);
+  const [family, setFamily] = useState("");
+  const [familyById, setFamilyById] = useState([]);
   const [families, setFamilies] = useState([]);
-  console.log({ families });
+
   useEffect(() => {
+    try {
+      axios
+        .get(`http://localhost:3001/api/family/` + idFamily)
+        .then((response) => {
+          if (response.data) setFamilyById(response.data);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+    console.log(familyById);
+
+    /*
     try {
       axios.get(`http://localhost:3001/api/family/`).then((response) => {
         if (response.data) setFamilies(response.data);
       });
     } catch (error) {
       console.log(error);
-    }
+    }*/
   }, []);
   //handleSubmit
   const handleSubmit = async (event) => {
@@ -33,7 +49,7 @@ const AddRecipe = () => {
     formdata.append("image", image);
     formdata.append("price", price);
     formdata.append("describe", describe);
-    formdata.append("family", family);
+    formdata.append("family", idFamily);
     try {
       await axios
         .post("http://localhost:3001/api/recipe/add", formdata, {
@@ -41,7 +57,7 @@ const AddRecipe = () => {
         })
         .then((res) => {
           console.log(res.data);
-          window.location = "/recipe";
+          window.location = "/family/";
         });
     } catch (error) {
       console.log(error, "recipe_create");
@@ -51,7 +67,8 @@ const AddRecipe = () => {
   return (
     <div>
       <h2>
-        <i className="fa fa-user me-3"></i>Create Recipe
+        <i className="fa fa-user me-3"></i>Create Recipe of the family "{" "}
+        {familyById.name} "
       </h2>
 
       <div className="line"></div>
@@ -72,8 +89,9 @@ const AddRecipe = () => {
           />
         </div>
       </div>
-      <div className="form-group row mb-2 mx-2">
-        <label htmlFor="formPrice" className="col-sm-2">
+
+      {/*  <div className="form-group row mb-2 mx-2"> 
+        <label htmlFor="formFamily" className="col-sm-2">
           Family*
         </label>
         <div className="col-sm-8">
@@ -86,6 +104,7 @@ const AddRecipe = () => {
             }}
             className="form-select"
             aria-label="Default select example"
+            id="formFamily"
           >
             {families.map((family) => (
               <option name="family" value={family._id}>
@@ -94,7 +113,7 @@ const AddRecipe = () => {
             ))}
           </select>
         </div>
-      </div>
+            </div> */}
       <div className="form-group row mb-2 mx-2">
         <label htmlFor="formPrice" className="col-sm-2">
           Price *
@@ -122,7 +141,6 @@ const AddRecipe = () => {
             type="file"
             id="image"
             filename="image"
-            value={image}
             onChange={(e) => setImage(e.target.files[0])}
           />
         </div>

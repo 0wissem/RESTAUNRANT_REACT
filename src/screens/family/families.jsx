@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Modal, Button } from "react-bootstrap";
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import FamilyCard from "../../components/FamilyCard/FamilyCard";
 import { useCallback } from "react";
 import RecipeCard from "../../components/RecipeCard/RecipeCard";
@@ -9,6 +9,7 @@ import RecipeCard from "../../components/RecipeCard/RecipeCard";
 const Family = () => {
   const [family, setFamily] = useState([]);
   const [familyId, setfamilyId] = useState(null);
+  const [familById, setfamilyById] = useState([]);
   const [recipes, setRecipes] = useState([]);
   //const handleClose = () => setShow(false);
   // const handleShow = (id) => {
@@ -31,6 +32,7 @@ const Family = () => {
     try {
       axios.get(`http://localhost:3001/api/family/${EP}`).then((response) => {
         console.log("get recipes by family id: ", response.data);
+
         if (familyId) {
           setRecipes(response.data);
         } else {
@@ -59,13 +61,28 @@ const Family = () => {
   // };
   const onFamilySelection = (id) => {
     setfamilyId(id);
+    axios.get("http://localhost:3001/api/family/" + id).then((response) => {
+      console.log("get array of family by: ", response.data);
+
+      setfamilyById(response.data);
+    });
+    console.log(familById);
   };
   const onCancelFamilySelection = () => setfamilyId(null);
   console.log(recipes);
   return (
     <div>
       <h2>
-        <i className="fas fa-clipboard me-3"></i>List of Families
+        {familyId === null ? (
+          <div>
+            <i className="fas fa-clipboard me-3"></i> List of Families
+          </div>
+        ) : (
+          <div>
+            <i className="fas fa-clipboard me-3"></i>List of recipes of the
+            family "{familById.name}"
+          </div>
+        )}
       </h2>
 
       <div className="line "></div>
@@ -73,23 +90,33 @@ const Family = () => {
       <div className="row justify-content-center">
         <div>
           <div className="d-flex flex-row-reverse ">
-            {!!familyId && (
-              <button
-                className="btn btn-primary ms-2"
-                onClick={onCancelFamilySelection}
-              >
-                Cancel
+            {familyId === null ? (
+              <button className="btn btn-primary mb-3 ">
+                <NavLink
+                  to={"/family/add"}
+                  style={{ color: "white" }}
+                  className="link"
+                >
+                  <i className="fa fa-plus me-2"></i>Add New Family
+                </NavLink>
               </button>
+            ) : (
+              <div className="mb-3">
+                <NavLink
+                  to={"/recipe/add/" + familyId}
+                  style={{ color: "white" }}
+                  className="btn btn-primary ms-2"
+                >
+                  Add New Recipe
+                </NavLink>
+                <button
+                  className="btn btn-primary ms-2 "
+                  onClick={onCancelFamilySelection}
+                >
+                  Cancel
+                </button>
+              </div>
             )}
-            <button className="btn btn-primary ">
-              <NavLink
-                to={"/family/add"}
-                style={{ color: "white" }}
-                className="link"
-              >
-                <i className="fa fa-plus me-2"></i>Add New Family
-              </NavLink>
-            </button>
           </div>
 
           {!familyId
