@@ -7,10 +7,19 @@ const EditRecipe = () => {
 
   const [name, setName] = useState("");
   const [image, setImage] = useState("");
+  const [imageAncien, setImageAncien] = useState("");
+
   const [describe, setDescribe] = useState("");
   const [price, setPrice] = useState("");
   const [family, setFamily] = useState(null);
   const [families, setFamilies] = useState([]);
+  console.log({
+    name,
+    image,
+    price,
+    describe,
+    imageAncien,
+  });
   useEffect(() => {
     try {
       axios.get(`http://localhost:3001/api/family/`).then((response) => {
@@ -30,6 +39,7 @@ const EditRecipe = () => {
         setName(res.data.name);
         setDescribe(res.data.describe);
         setImage(res.data.image);
+        setImageAncien(res.data.image);
         setPrice(res.data.price);
         setFamily(res.data.family);
       })
@@ -131,14 +141,13 @@ const EditRecipe = () => {
 
       <div className="form-group row mb-2 mx-2">
         <label htmlFor="image" className="col-sm-2">
-          Image *
+          Image
         </label>
         <div className="col-sm-8">
           <input
             className="form-control"
             type="file"
             id="image"
-            required="required"
             filename="image"
             onChange={(e) => setImage(e.target.files[0])}
           />
