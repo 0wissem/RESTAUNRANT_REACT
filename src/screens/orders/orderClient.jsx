@@ -4,10 +4,13 @@ import axios from "axios";
 
 const OrderClient = () => {
   const [orders, setOrders] = useState([]);
+
   const [show, setShow] = useState(false);
   const [numberCar, setNumberCar] = useState("");
   useEffect(() => {
     const orders = JSON.parse(localStorage.getItem("detailsOrder"));
+    console.log(orders);
+
     if (orders) {
       setOrders(orders);
     }
@@ -44,7 +47,7 @@ const OrderClient = () => {
       <div className="row justify-content-center">
         <div className="d-flex flex-row-reverse ">
           <button className="btn btn-success mb-5 " onClick={handleShow}>
-            <i class="fa-solid fa-floppy-disk me-2"></i>Save
+            <i className="fa-solid fa-floppy-disk me-2"></i>Save
           </button>
         </div>
         <div>
@@ -59,21 +62,27 @@ const OrderClient = () => {
               </tr>
             </thead>
             <tbody>
-              {orders.map((order, index) => (
-                <tr key={index} id={order._id}>
+              {orders.map((ord, index) => (
+                <tr key={index} id={ord._id}>
                   <td>
                     <img
-                      src={"/uploads/" + order.image}
+                      src={"/uploads/" + ord.recipe.image}
                       className="rounded float-start me-2"
                       width="48"
                       alt="..."
                     />
-                    {order.name}
+                    {ord.recipe.name}
+                    <br /> <br />
+                    {ord.addon.map((add) => (
+                      <div key={add}>
+                        {add} <button className="btn">X</button>
+                      </div>
+                    ))}
                   </td>
-                  <td> {order.price}</td>
+                  <td>{ord.recipe.price}</td>
                   <td>
-                    {!!order.describe && (
-                      <p>{order.describe.substr(0, 45)}...</p>
+                    {!!ord.recipe.describe && (
+                      <p>{ord.recipe.describe.substr(0, 45)}...</p>
                     )}
                   </td>
                   <td>
