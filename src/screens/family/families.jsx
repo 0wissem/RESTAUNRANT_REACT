@@ -11,6 +11,9 @@ const Family = () => {
   const [familyId, setfamilyId] = useState(null);
   const [familById, setfamilyById] = useState([]);
   const [recipes, setRecipes] = useState([]);
+
+  const [search, setSearch] = useState("");
+
   //const handleClose = () => setShow(false);
   // const handleShow = (id) => {
   //   setShow(true);
@@ -118,27 +121,44 @@ const Family = () => {
               </div>
             )}
           </div>
-
+          <div className="col-2 "></div>
+          <div className="col-8 mx-auto mb-3">
+            <div className="input-group">
+              <span className="input-group-text">
+                <i className="fa fa-search"></i>
+              </span>
+              <input
+                type="search"
+                placeholder="Search"
+                onChange={(e) => setSearch(e.target.value)}
+                className="form-control "
+              />
+            </div>
+          </div>
           {!familyId
-            ? family.map((family) => (
-                <FamilyCard
-                  key={family?._id}
-                  describe={family?.describe || ""}
-                  id={family?._id}
-                  image={family?.image}
-                  name={family?.name}
-                  onClick={() => onFamilySelection(family?._id)}
-                />
-              ))
-            : recipes.map((recipe) => (
-                <RecipeCard
-                  key={recipe?._id}
-                  describe={recipe?.describe || ""}
-                  id={recipe?._id}
-                  image={recipe?.image}
-                  name={recipe?.name}
-                />
-              ))}
+            ? family
+                .filter((family) => family.name.toLowerCase().includes(search))
+                .map((family) => (
+                  <FamilyCard
+                    key={family?._id}
+                    describe={family?.describe || ""}
+                    id={family?._id}
+                    image={family?.image}
+                    name={family?.name}
+                    onClick={() => onFamilySelection(family?._id)}
+                  />
+                ))
+            : recipes
+                .filter((recipe) => recipe.name.toLowerCase().includes(search))
+                .map((recipe) => (
+                  <RecipeCard
+                    key={recipe?._id}
+                    describe={recipe?.describe || ""}
+                    id={recipe?._id}
+                    image={recipe?.image}
+                    name={recipe?.name}
+                  />
+                ))}
         </div>
       </div>
     </div>
