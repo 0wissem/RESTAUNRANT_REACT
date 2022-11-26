@@ -1,49 +1,43 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { updatefamily, getFamilyById } from "../../store/slices/familySlice";
 
-import axios from "axios";
 const EditFamily = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const { id } = useParams();
+  const { familyInfo } = useSelector((state) => state.families);
 
   const [name, setName] = useState("");
   const [image, setImage] = useState("");
   const [describe, setDescribe] = useState("");
 
   useEffect(() => {
-    axios
-      .get("http://localhost:3001/api/family/" + id)
-      .then((res) => {
-        setName(res.data.name);
-        setDescribe(res.data.describe);
-        setImage(res.data.image);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    dispatch(getFamilyById(id));
   }, [id]);
 
+  useEffect(() => {
+    if (familyInfo) {
+      setName(familyInfo.name);
+      setDescribe(familyInfo.describe);
+      setImage(familyInfo.image);
+    }
+  }, [familyInfo]);
+
   //handleSubmit
-  const handleSubmit = async (event) => {
+  const handleSubmitEdit = async (event) => {
     event.preventDefault();
-    console.log({
-      name,
-      image,
-      describe,
-    });
 
     const formdata = new FormData();
+    formdata.append("id", id);
     formdata.append("name", name);
     formdata.append("image", image);
     formdata.append("describe", describe);
 
-    await axios
-      .put(`http://localhost:3001/api/family/update/${id}`, formdata, {
-        headers: { "Content-Type": "multipart/form-data" },
-      })
-      .then((res) => {
-        console.log(res.data);
-        window.location = "/family";
-      });
+    dispatch(updatefamily(formdata));
+    navigate("/family");
   };
 
   return (
@@ -55,6 +49,7 @@ const EditFamily = () => {
       <div className="line"></div>
 
       <div className="form-group row mb-2 mx-2">
+        <input type="hidden" value={id} />
         <label htmlFor="formName" className="col-sm-2">
           Name *
         </label>
@@ -104,7 +99,7 @@ const EditFamily = () => {
       <div className="d-flex flex-row-reverse col-sm-10 ">
         <button
           type="submit"
-          onClick={(event) => handleSubmit(event)}
+          onClick={(event) => handleSubmitEdit(event)}
           className="btn btn-primary  rounded-pill"
         >
           Edit Family

@@ -1,6 +1,11 @@
 import React, { useState } from "react";
-import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addFamilies, getFamilies } from "../../store/slices/familySlice";
 const AddFamily = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [name, setName] = useState("");
   const [image, setImage] = useState("defaut.png");
   const [describe, setDescribe] = useState("");
@@ -24,14 +29,10 @@ const AddFamily = () => {
     for (const value of formdata.values()) {
       console.log(value);
     }
-    await axios
-      .post("http://localhost:3001/api/family/add", formdata, {
-        headers: { "Content-Type": "multipart/form-data" },
-      })
-      .then((res) => {
-        console.log(res.data);
-        window.location = "/family";
-      });
+    dispatch(addFamilies(formdata));
+    dispatch(getFamilies());
+
+    navigate("/family");
   };
 
   return (

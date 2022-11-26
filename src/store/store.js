@@ -3,6 +3,7 @@ import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
 import orderSlice from "./slices/orderSlice";
 import userSlice from "./slices/userSlice";
+import familySlice from "./slices/familySlice";
 
 const persistConfig = {
   key: "root",
@@ -13,6 +14,7 @@ const orderPersistedSlice = persistReducer(persistConfig, orderSlice);
 
 export const store = configureStore({
   reducer: {
+    families: familySlice,
     order: orderPersistedSlice,
     user: userPersistedSlice,
   },
