@@ -57,6 +57,15 @@ function SideBar() {
               </NavLink>
             </li>
           )}
+
+          {role === ROLES.ADMIN && (
+            <li>
+              <NavLink to={{ pathname: `/addons` }} className="link">
+                <i className="fa-solid fa-burger me-2"></i>
+                Addons
+              </NavLink>
+            </li>
+          )}
         </ul>
       </nav>
     </>

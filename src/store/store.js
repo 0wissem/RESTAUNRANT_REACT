@@ -4,6 +4,7 @@ import storage from "redux-persist/lib/storage"; // defaults to localStorage for
 import orderSlice from "./slices/orderSlice";
 import userSlice from "./slices/userSlice";
 import ingredientSlice from "./slices/ingredientSlice";
+import addonsSlice from "./slices/addonsSlice";
 const persistConfig = {
   key: "root",
   storage,
@@ -16,6 +17,7 @@ export const store = configureStore({
     order: orderPersistedSlice,
     user: userPersistedSlice,
     ingredients: ingredientSlice,
+    addons: addonsSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
