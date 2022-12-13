@@ -4,6 +4,8 @@ import storage from "redux-persist/lib/storage"; // defaults to localStorage for
 import orderSlice from "./slices/orderSlice";
 import userSlice from "./slices/userSlice";
 import ingredientSlice from "./slices/ingredientSlice";
+import familySlice from "./slices/familySlice";
+
 const persistConfig = {
   key: "root",
   storage,
@@ -13,6 +15,7 @@ const orderPersistedSlice = persistReducer(persistConfig, orderSlice);
 
 export const store = configureStore({
   reducer: {
+    families: familySlice,
     order: orderPersistedSlice,
     user: userPersistedSlice,
     ingredients: ingredientSlice,
