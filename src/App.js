@@ -16,6 +16,11 @@ import Ingredients from "./screens/ingredient/ingredients";
 import AddIngredient from "./screens/ingredient/ingredients_create";
 import EditIngredient from "./screens/ingredient/ingredients_edit";
 
+//addons
+import Addons from "./screens/addons/addons";
+import AddAddon from "./screens/addons/addons_create";
+import EditAddon from "./screens/addons/addons_edit";
+
 //Recipes
 import Recipes from "./screens/recipe/recipes";
 import AddRecipe from "./screens/recipe/recipes_create";
@@ -97,6 +102,32 @@ function App() {
               element={
                 <Privacy show={role === ROLES.ADMIN}>
                   <EditIngredient />
+                </Privacy>
+              }
+            />
+
+            <Route
+              path="addons"
+              element={
+                <Privacy show={role === ROLES.ADMIN}>
+                  <Addons />
+                </Privacy>
+              }
+            />
+
+            <Route
+              path="addons/add"
+              element={
+                <Privacy show={role === ROLES.ADMIN}>
+                  <AddAddon />
+                </Privacy>
+              }
+            />
+            <Route
+              path="addons/edit/:id"
+              element={
+                <Privacy show={role === ROLES.ADMIN}>
+                  <EditAddon />
                 </Privacy>
               }
             />

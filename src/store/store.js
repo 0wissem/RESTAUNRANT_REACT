@@ -6,6 +6,7 @@ import userSlice from "./slices/userSlice";
 import ingredientSlice from "./slices/ingredientSlice";
 import familySlice from "./slices/familySlice";
 
+import addonsSlice from "./slices/addonsSlice";
 const persistConfig = {
   key: "root",
   storage,
@@ -19,6 +20,7 @@ export const store = configureStore({
     order: orderPersistedSlice,
     user: userPersistedSlice,
     ingredients: ingredientSlice,
+    addons: addonsSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
