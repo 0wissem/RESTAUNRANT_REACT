@@ -1,91 +1,74 @@
 import React, { useState, useEffect } from "react";
-import { Navigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { updateRecipe, getRecipesById } from "../../store/slices/recipesSlice";
 
-import axios from "axios";
 const EditRecipe = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const { id } = useParams();
 
-  const [name, setName] = useState("");
-  const [image, setImage] = useState("");
-  const [imageAncien, setImageAncien] = useState("");
+  const { recipesInfo } = useSelector((state) => state.recipes);
+  const { familyInfo } = useSelector((state) => state.families);
+  const { ingredients } = useSelector((state) => state.ingredients);
 
+  const [name, setName] = useState("");
+  const [image, setImage] = useState("defaut.png");
   const [describe, setDescribe] = useState("");
   const [price, setPrice] = useState("");
-  const [family, setFamily] = useState(null);
-  const [families, setFamilies] = useState([]);
-  console.log({
-    name,
-    image,
-    price,
-    describe,
-    imageAncien,
-  });
+  const [ingredientsRecipes, setIngredientsRecipes] = useState([]);
+
   useEffect(() => {
-    try {
-      axios.get(`http://localhost:3001/api/family/`).then((response) => {
-        if (response.data) {
-          setFamilies(response.data);
-          setFamily(response.data?.[0]?._id);
-        }
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  }, []);
-  useEffect(() => {
-    axios
-      .get("http://localhost:3001/api/recipe/" + id)
-      .then((res) => {
-        setName(res.data.name);
-        setDescribe(res.data.describe);
-        setImage(res.data.image);
-        setImageAncien(res.data.image);
-        setPrice(res.data.price);
-        setFamily(res.data.family);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    dispatch(getRecipesById(id));
   }, [id]);
 
-  //handleSubmit
+  useEffect(() => {
+    if (recipesInfo) {
+      console.log(ingredientsRecipes);
+      setName(recipesInfo.name);
+      setIngredientsRecipes(recipesInfo.ingredientsRecipes);
+      console.log(ingredientsRecipes);
+
+      setImage(recipesInfo.image);
+      setDescribe(recipesInfo.describe);
+      setPrice(recipesInfo.price);
+    }
+  }, [recipesInfo]);
+
+  //addRecipe
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log({
-      name,
-      image,
-      price,
-      describe,
-    });
-
     const formdata = new FormData();
+    formdata.append("id", id);
     formdata.append("name", name);
     formdata.append("image", image);
     formdata.append("price", price);
     formdata.append("describe", describe);
-    formdata.append("family", family);
-
-    await axios
-      .put(`http://localhost:3001/api/recipe/update/${id}`, formdata, {
-        headers: { "Content-Type": "multipart/form-data" },
-      })
-      .then((res) => {
-        console.log(res.data);
-        // window.location = "/recipe";
-      });
+    formdata.append("family", recipesInfo.family);
+    ingredientsRecipes.forEach((ingredientRecipe) =>
+      formdata.append("ingredientsRecipes", ingredientRecipe)
+    );
+    try {
+      dispatch(updateRecipe(formdata));
+      navigate("/family");
+    } catch (error) {
+      console.log(error, "Error");
+    }
   };
 
   return (
     <div>
       <h2>
-        <i className="fa fa-user me-3"></i>Edit Recipe
+        <i className="fa fa-user me-3"></i>Edit Recipe of the family "
+        {familyInfo.name} "
       </h2>
 
       <div className="line"></div>
 
       <div className="form-group row mb-2 mx-2">
         <label htmlFor="formName" className="col-sm-2">
-          Name *
+          Name*
         </label>
         <div className="col-sm-8">
           <input
@@ -99,29 +82,37 @@ const EditRecipe = () => {
           />
         </div>
       </div>
-      <div className="form-group row mb-2 mx-2">
-        <label htmlFor="formPrice" className="col-sm-2">
-          Family*
+
+      <div className="form-group row mb-2 mx-3">
+        <label htmlFor="formSP" className="col-sm-2">
+          Ingredients*
         </label>
         <div className="col-sm-8">
           <select
-            required
-            defaultValue="select"
-            value={family}
-            onChange={(e) => {
-              setFamily(e.target.value);
-            }}
             className="form-select"
-            aria-label="Default select example"
+            multiple
+            aria-label="multiple select example"
+            value={ingredientsRecipes}
+            onChange={(e) => {
+              setIngredientsRecipes(
+                [...e.target.selectedOptions].map((o) => o.value)
+              );
+            }}
           >
-            {families.map((family) => (
-              <option name="family" value={family._id}>
-                {family.name}
-              </option>
-            ))}
+            {ingredients &&
+              ingredients.map((ingredient) => (
+                <option
+                  key={ingredient._id}
+                  id={ingredient._id}
+                  value={ingredient._id}
+                >
+                  {ingredient.name}
+                </option>
+              ))}
           </select>
         </div>
       </div>
+
       <div className="form-group row mb-2 mx-2">
         <label htmlFor="formPrice" className="col-sm-2">
           Price *
@@ -160,7 +151,6 @@ const EditRecipe = () => {
         </label>
         <div className="col-sm-8">
           <textarea
-            rows="8"
             className="form-control"
             id="formDescribe"
             value={describe}
@@ -168,6 +158,7 @@ const EditRecipe = () => {
           />
         </div>
       </div>
+
       <div className="d-flex flex-row-reverse col-sm-10 ">
         <button
           type="submit"

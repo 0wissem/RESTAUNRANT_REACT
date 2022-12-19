@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { NavLink, useNavigate } from "react-router-dom";
 import FamilyCard from "../../components/FamilyCard/FamilyCard";
 import RecipeCard from "../../components/RecipeCard/RecipeCard";
 import { useDispatch, useSelector } from "react-redux";
-import { getFamilies, deletefamily } from "../../store/slices/familySlice";
+import {
+  getFamilies,
+  getFamilyById,
+  deletefamily,
+} from "../../store/slices/familySlice";
+import { getRecipes, deleteRecipe } from "../../store/slices/recipesSlice";
 
 import swal from "sweetalert";
 
@@ -12,26 +16,29 @@ const Family = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { families, isloading, error } = useSelector((state) => state.families);
+  const { families, isloading, error, familyInfo } = useSelector(
+    (state) => state.families
+  );
+  const { recipes } = useSelector((state) => state.recipes);
   const [familyId, setfamilyId] = useState(null);
-  const [familById, setfamilyById] = useState([]);
-  const [recipes, setRecipes] = useState([]);
+  const [recipesByFamily, setRecipesByFamily] = useState([]);
 
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    let EP = "";
-    if (familyId) {
-      EP = `${familyId}/recipes`;
-    }
+    dispatch(getFamilies());
+    dispatch(getRecipes());
+
     try {
-      axios.get(`http://localhost:3001/api/family/${EP}`).then((response) => {
-        if (familyId) {
-          setRecipes(response.data);
-        } else {
-          dispatch(getFamilies());
-        }
-      });
+      if (familyId) {
+        const recipesByFamily = recipes.filter((recipe) => {
+          return recipe.family === familyId;
+        });
+
+        setRecipesByFamily(recipesByFamily);
+      } else {
+        dispatch(getFamilies());
+      }
     } catch (error) {
       console.log("get recipes by family id", error);
     }
@@ -39,27 +46,42 @@ const Family = () => {
 
   const onFamilySelection = (id) => {
     setfamilyId(id);
-    axios.get("http://localhost:3001/api/family/" + id).then((response) => {
-      console.log("get array of family by: ", response.data);
 
-      setfamilyById(response.data);
-    });
+    dispatch(getFamilyById(id));
+    console.log("get array of family by: ", familyInfo);
   };
 
   const onCancelFamilySelection = () => setfamilyId(null);
 
-  //delete handler
-  const deleteHandler = (id) => {
+  //delete handler Family
+  const deleteHandlerFamily = (idFamily) => {
     swal({
       title: "Are you sure?",
       text: "Are you sure that you want to delete this family?",
       icon: "warning",
       dangerMode: true,
     }).then((willDelete) => {
-      dispatch(deletefamily(id));
+      dispatch(deletefamily(idFamily));
       if (willDelete) {
         swal("Deleted!", "Family has been deleted!", "success");
         dispatch(getFamilies());
+      }
+    });
+  };
+
+  //delete handler Recipe
+  const deleteHandlerRecipe = (idRecipe) => {
+    console.log(idRecipe);
+    swal({
+      title: "Are you sure?",
+      text: "Are you sure that you want to delete this recipe?",
+      icon: "warning",
+      dangerMode: true,
+    }).then((willDelete) => {
+      dispatch(deleteRecipe(idRecipe));
+      if (willDelete) {
+        swal("Deleted!", "Recipe has been deleted!", "success");
+        dispatch(getRecipes());
       }
     });
   };
@@ -74,7 +96,7 @@ const Family = () => {
         ) : (
           <div>
             <i className="fas fa-clipboard me-3"></i>List of recipes of the
-            family "{familById.name}"
+            family "{familyInfo ? familyInfo.name : ""}"
           </div>
         )}
       </h2>
@@ -117,6 +139,7 @@ const Family = () => {
             )}
           </div>
           <div className="col-2 "></div>
+          {/*search Input*/}
           <div className="col-8 mx-auto mb-3">
             <div className="input-group">
               <span className="input-group-text">
@@ -162,7 +185,7 @@ const Family = () => {
                         <button
                           className="btn btn-danger border-dark"
                           onClick={() => {
-                            deleteHandler(family?._id);
+                            deleteHandlerFamily(family?._id);
                           }}
                         >
                           <i className="fa fa-trash"></i>
@@ -172,16 +195,36 @@ const Family = () => {
                   </div>
                 ))
             ) : (
-              recipes
-                .filter((recipe) => recipe.name.toLowerCase().includes(search))
+              recipesByFamily
+                .filter((recipe) => recipe?.name.toLowerCase().includes(search))
                 .map((recipe) => (
-                  <RecipeCard
-                    key={recipe?._id}
-                    describe={recipe?.describe || ""}
-                    id={recipe?._id}
-                    image={recipe?.image}
-                    name={recipe?.name}
-                  />
+                  <div className="card me-5 floating-card " key={recipe._id}>
+                    <RecipeCard
+                      key={recipe?._id}
+                      describe={recipe?.describe || ""}
+                      id={recipe?._id}
+                      image={recipe?.image}
+                      name={recipe?.name}
+                    />
+                    <div className="d-flex flex-row-reverse ">
+                      <div className="m-2 mb-3">
+                        <button className="btn btn-warning  border-dark me-2">
+                          <NavLink to={"/recipe/edit/" + recipe._id}>
+                            <i className="fa fa-edit text-dark"></i>
+                          </NavLink>
+                        </button>
+
+                        <button
+                          className="btn btn-danger border-dark"
+                          onClick={() => {
+                            deleteHandlerRecipe(recipe?._id);
+                          }}
+                        >
+                          <i className="fa fa-trash"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
                 ))
             )
           ) : (

@@ -1,74 +1,47 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { addRecipe, getRecipes } from "../../store/slices/recipesSlice";
 
-import axios from "axios";
 const AddRecipe = () => {
-  const { idFamily } = useParams();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const { familyInfo } = useSelector((state) => state.families);
+  const { ingredients } = useSelector((state) => state.ingredients);
 
   const [name, setName] = useState("");
   const [image, setImage] = useState("defaut.png");
   const [describe, setDescribe] = useState("");
   const [price, setPrice] = useState("");
-  const [family, setFamily] = useState("");
-  const [familyById, setFamilyById] = useState([]);
-  const [families, setFamilies] = useState([]);
+  const [ingredientsRecipes, setIngredientsRecipes] = useState([]);
 
-  useEffect(() => {
-    try {
-      axios
-        .get(`http://localhost:3001/api/family/` + idFamily)
-        .then((response) => {
-          if (response.data) setFamilyById(response.data);
-        });
-    } catch (error) {
-      console.log(error);
-    }
-    console.log(familyById);
-
-    /*
-    try {
-      axios.get(`http://localhost:3001/api/family/`).then((response) => {
-        if (response.data) setFamilies(response.data);
-      });
-    } catch (error) {
-      console.log(error);
-    }*/
-  }, []);
-  //handleSubmit
+  //addRecipe
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log({
-      name,
-      image,
-      describe,
-      price,
-    });
-
     const formdata = new FormData();
     formdata.append("name", name);
     formdata.append("image", image);
     formdata.append("price", price);
     formdata.append("describe", describe);
-    formdata.append("family", idFamily);
+    formdata.append("family", familyInfo._id);
+    ingredientsRecipes.forEach((ingredientRecipe) =>
+      formdata.append("ingredientsRecipes", ingredientRecipe)
+    );
     try {
-      await axios
-        .post("http://localhost:3001/api/recipe/add", formdata, {
-          headers: { "Content-Type": "multipart/form-data" },
-        })
-        .then((res) => {
-          console.log(res.data);
-          window.location = "/family/";
-        });
+      dispatch(addRecipe(formdata));
+      dispatch(getRecipes());
+      navigate("/family");
     } catch (error) {
-      console.log(error, "recipe_create");
+      console.log(error, "Error");
     }
   };
 
   return (
     <div>
       <h2>
-        <i className="fa fa-user me-3"></i>Create Recipe of the family "{" "}
-        {familyById.name} "
+        <i className="fa fa-user me-3"></i>Create Recipe of the family "
+        {familyInfo.name} "
       </h2>
 
       <div className="line"></div>
@@ -90,30 +63,35 @@ const AddRecipe = () => {
         </div>
       </div>
 
-      {/*  <div className="form-group row mb-2 mx-2"> 
-        <label htmlFor="formFamily" className="col-sm-2">
-          Family*
+      <div className="form-group row mb-2 mx-3">
+        <label htmlFor="formSP" className="col-sm-2">
+          Ingredients*
         </label>
         <div className="col-sm-8">
           <select
-            required
-            defaultValue="select"
-            value={family}
-            onChange={(e) => {
-              setFamily(e.target.value);
-            }}
             className="form-select"
-            aria-label="Default select example"
-            id="formFamily"
+            multiple
+            aria-label="multiple select example"
+            value={ingredientsRecipes}
+            onChange={(e) => {
+              setIngredientsRecipes(
+                [...e.target.selectedOptions].map((o) => o.value)
+              );
+            }}
           >
-            {families.map((family) => (
-              <option name="family" value={family._id}>
-                {family.name}
-              </option>
-            ))}
+            {ingredients &&
+              ingredients.map((ingredient) => (
+                <option
+                  key={ingredient._id}
+                  id={ingredient._id}
+                  value={ingredient._id}
+                >
+                  {ingredient.name}
+                </option>
+              ))}
           </select>
         </div>
-            </div> */}
+      </div>
       <div className="form-group row mb-2 mx-2">
         <label htmlFor="formPrice" className="col-sm-2">
           Price *

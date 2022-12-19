@@ -1,14 +1,17 @@
 import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { increment, onlogin } from "../../store/slices/userSlice.js";
+import { useDispatch } from "react-redux";
 import { getAddons } from "../../store/slices/addonsSlice";
 import { getIngredients } from "../../store/slices/ingredientSlice";
+import { getFamilies } from "../../store/slices/familySlice";
+import { getRecipes } from "../../store/slices/recipesSlice";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getAddons());
     dispatch(getIngredients());
+    dispatch(getFamilies());
+    dispatch(getRecipes());
   }, [dispatch]);
 
   return (
